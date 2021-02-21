@@ -1,21 +1,63 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Component } from 'react';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+import { StyleSheet, View, Button, Text } from 'react-native';
+const customData = require('./quotes.json');
+ 
+export default class MyProject extends Component {
+
+  //The constructor in a React component is called before the component is mounted. 
+  //When you implement the constructor for a React component, you need to call super(props) 
+  //method before any other statement. If you do not call super(props) method, this.props will
+  // be undefined in the constructor and can lead to bugs.
+  constructor(){
+
+    // calls parent constructor
+    super();
+
+    this.state={
+
+      // This is our Default number value
+      Quote : "Generate New Quote by pressing Button"
+
+    }
+  }
+
+GenerateQuote=()=>
+{
+// random pick quote in data
+// for loop to look for length in date and pick random
+
+ var RandomNumber = Math.floor(Math.random() * 100) + 1 ;
+ console.log(customData[RandomNumber]["Quote"])
+
+this.setState({
+
+  Quote : customData[RandomNumber]["Quote"]
+
+})
 }
 
-const styles = StyleSheet.create({
-  container: {
+  render() {
+    return (
+   
+      <View style={styles.MainContainer} >
+
+       <Text style={{marginBottom: 10, fontSize: 20}}>{this.state.Quote}</Text>
+
+       <Button title="Generate New Qoute" onPress={this.GenerateQuote} />
+        
+      </View>
+
+    );
+  }
+}
+
+const styles = StyleSheet.create(
+{
+  MainContainer: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
-  },
+    alignItems: 'center',
+  }
+
 });
