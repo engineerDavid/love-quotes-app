@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import { StyleSheet, View, Button, Text } from 'react-native';
 const customData = require('./quotes.json');
+var history = [];
+var intialQuote = 0;
  
 export default class MyProject extends Component {
 
@@ -13,40 +15,78 @@ export default class MyProject extends Component {
 
     // calls parent constructor
     super();
+    var RandomNumber = Math.floor(Math.random() * 48391) + 1 ;
+    intialQuote = RandomNumber
 
     this.state={
 
       // This is our Default number value
-      Quote : "Generate New Quote by pressing Button"
+      Quote : customData[RandomNumber]["Quote"]
 
     }
   }
 
-GenerateQuote=()=>
+GenerateNewQuote=()=>
 {
 // random pick quote in data
 // for loop to look for length in date and pick random
 
- var RandomNumber = Math.floor(Math.random() * 100) + 1 ;
- console.log(customData[RandomNumber]["Quote"])
+//48391 is length of data
+ var RandomNumber = Math.floor(Math.random() * 48391) + 1 ;
+ history.push(RandomNumber); 
+ console.log(history);
 
 this.setState({
 
   Quote : customData[RandomNumber]["Quote"]
 
 })
+
+
+
 }
+
+
+GenerateOldQuote=()=>
+{
+// random pick quote in data
+// for loop to look for length in date and pick random
+
+//48391 is length of data
+
+ var Previous = history[history.length-2]
+ console.log(customData[Previous]["Quote"]);
+ history.pop()
+
+this.setState({
+
+  Quote : customData[Previous]["Quote"]
+
+})
+
+
+
+}
+
 
   render() {
     return (
    
       <View style={styles.MainContainer} >
 
-       <Text style={{marginBottom: 10, fontSize: 20}}>{this.state.Quote}</Text>
+       <Text style={styles.textStyle}>{this.state.Quote}</Text>
 
-       <Button title="Generate New Qoute" onPress={this.GenerateQuote} />
+       
+
+       <View style={ styles.bottomView} >
+ 
+       <Button style={ styles.button} title="Previous" onPress={this.GenerateOldQuote} />
+       <Button style={ styles.button} title="Generate New Qoute" onPress={this.GenerateNewQuote} />
+       
+               </View>
         
       </View>
+      
 
     );
   }
@@ -54,10 +94,40 @@ this.setState({
 
 const styles = StyleSheet.create(
 {
-  MainContainer: {
+  
+  MainContainer:
+  {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-  }
+    marginHorizontal: 16,
+  },
+  textStyle:{
+ 
+    textAlign: 'center',
+    marginVertical: 8,
+    
+    
+  },
 
+  bottomView:{
+
+    
+    height: 80, 
+    //backgroundColor: '#FF9800', 
+    justifyContent: 'center', 
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 0,
+    padding: 20,
+    flexDirection: 'row',
+
+    
+   
+    
+    
+  },
+  button: {
+    marginLeft: 20,
+    
+ }
 });
