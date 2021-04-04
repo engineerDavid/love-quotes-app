@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 
 import { StyleSheet, View, Button, Text } from 'react-native';
-const customData = require('./quotes.json');
+import { GestureHandler } from 'expo';
+
+//Get the quote data from the json file
+const quoteData = require('./quotes.json');
 var history = [];
 var intialQuote = 0;
  
@@ -16,29 +19,36 @@ export default class MyProject extends Component {
     // calls parent constructor
     super();
     var RandomNumber = Math.floor(Math.random() * 48391) + 1 ;
-    intialQuote = RandomNumber
+    intialQuote = RandomNumber;
 
-    this.state={
+    
+    this.state= {
 
       // This is our Default number value
-      Quote : customData[RandomNumber]["Quote"]
+      Quote : quoteData["quotes"][2]
+
+
+     
 
     }
   }
+
+  
 
 GenerateNewQuote=()=>
 {
 // random pick quote in data
 // for loop to look for length in date and pick random
 
-//48391 is length of data
- var RandomNumber = Math.floor(Math.random() * 48391) + 1 ;
+//0-2 is length of data
+ var RandomNumber = Math.floor(Math.random() * 3);
  history.push(RandomNumber); 
- console.log(history);
+ console.log(RandomNumber);
 
 this.setState({
 
-  Quote : customData[RandomNumber]["Quote"]
+  Quote : quoteData["quotes"][RandomNumber],
+  
 
 })
 
@@ -73,17 +83,15 @@ this.setState({
     return (
    
       <View style={styles.MainContainer} >
+      <React.Fragment>
 
-       <Text style={styles.textStyle}>{this.state.Quote}</Text>
+      <Text style={styles.quoteText}>{this.state.Quote.text}</Text>
+					<Text style={styles.quoteAuthor}>{this.state.Quote.author}</Text>
+          <Button onPress={this.GenerateNewQuote} title="Show Me Another Quote!" />
+          </React.Fragment>
+
 
        
-
-       <View style={ styles.bottomView} >
- 
-       <Button style={ styles.button} title="Previous" onPress={this.GenerateOldQuote} />
-       <Button style={ styles.button} title="Generate New Qoute" onPress={this.GenerateNewQuote} />
-       
-               </View>
         
       </View>
       
@@ -98,36 +106,18 @@ const styles = StyleSheet.create(
   MainContainer:
   {
     flex: 1,
-    justifyContent: 'center',
-    marginHorizontal: 16,
+		backgroundColor: "#fff",
+		alignItems: "center",
+		justifyContent: "center",
+		padding: 25,
   },
-  textStyle:{
+  quoteText: {
+		textAlign: "center",
+		fontSize: 28,
+	},
+	quoteAuthor: {
+		fontSize: 18,
+		marginTop: 25,
+	},
  
-    textAlign: 'center',
-    marginVertical: 8,
-    
-    
-  },
-
-  bottomView:{
-
-    
-    height: 80, 
-    //backgroundColor: '#FF9800', 
-    justifyContent: 'center', 
-    alignItems: 'center',
-    position: 'absolute',
-    bottom: 0,
-    padding: 20,
-    flexDirection: 'row',
-
-    
-   
-    
-    
-  },
-  button: {
-    marginLeft: 20,
-    
- }
 });
